@@ -4,19 +4,25 @@ import { useState } from "react";
 
 function App() {
 
+  
+
   let [expression, setExpression] = useState("");
   let [oldExpression, setOldExpression] = useState("0");
   let [previous, setPrevious] = useState("ANS");
 
   let numerics = new Set("0123456789."); //its like the set in mathematics, it creates a set of items
-  let operators = new Set("+-/*%");
+  let operators = new Set("+-/*%()");
   let buttons = ["(", ")", "%", "AC", "7", "8", "9", "/", "4", "5", "6", "*", "1", "2", "3", "-", "0", ".", "=", "+"];
 
   let evaluateExpression = function(){
-    let evaluation = eval(expression);
+    try{let evaluation = eval(expression);
       setOldExpression(expression + "= ");
       setExpression(String(evaluation));
-      setPrevious("ANS");
+      setPrevious("ANS");}
+      catch{
+        console.log("ERR");
+      }
+    
   }
 
   let backspaceFunction = function(){
@@ -27,7 +33,7 @@ function App() {
   }
 
   let putNumerics = function(value){
-    if (previous === "ANS"){                 //value is nothing but event.key
+    if (previous === "ANS" || previous === "ERR"){                 //value is nothing but event.key
       setOldExpression("Ans = " + expression);
       setExpression(value);   
     } else {
@@ -46,7 +52,7 @@ function App() {
   }
 
   const handleKeyUp = function(event){
-    //console.log(event.key);
+    document.querySelector(".App").focus();
     if (event.key === "Backspace"){
       backspaceFunction();
     } else if (numerics.has(event.key)){     //numerics.has(event.key) checks if the key entered matches with the ones available in the numerics set
@@ -60,8 +66,10 @@ function App() {
   }
   return (               //tabIndex={0} sets the focus to the div element by default
     <div className="App" tabIndex={0} onKeyUp={handleKeyUp}> 
-
-      <div className="calculatorDisplay">
+    <div className="calculator">
+    <div className="calculatorDisplay" style={{
+        backgroundColor: "lightblue"
+      }}>
       <h5>{oldExpression}</h5>
       <h1>{expression}</h1>
       </div>
@@ -88,9 +96,9 @@ function App() {
         <button className="container-items">.</button>
         <button className="container-items"> = </button>
         <button className="container-items">+</button> */}
-        {buttons.map(function(buttonValue, idx) {             //this is the pro method like Anuj sir
+        {buttons.map(function(buttonValue, idx) {             //this is the pro method
           return <button className="container-items" onClick={function(){
-            if (buttonValue === "CE"){
+            if (buttonValue === "AC"){
               backspaceFunction();
             } else if (numerics.has(buttonValue)){     //numerics.has(event.key) checks if the key entered matches with the ones available in the numerics set
               putNumerics(buttonValue);
@@ -103,7 +111,13 @@ function App() {
           }}>{buttonValue}</button>
         })}
     </div>
-
+    </div>
+      
+        <footer style={{
+          color: "#282c34",
+          position: "absolute",
+          bottom: "20px"
+        }}>Made with  ❤️   by Adarsh</footer>
     </div>
   );
 }
