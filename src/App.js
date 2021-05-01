@@ -116,11 +116,7 @@ function App() {
         <footer style={{
           color: "#282c34",
           position: "absolute",
-<<<<<<< HEAD
           bottom: "5px"
-=======
-          bottom: "20px"
->>>>>>> 4035793b6cc4ae38f1e6f3956d6ea3596a95eab2
         }}>Made with  ❤️   by Adarsh</footer>
     </div>
   );
